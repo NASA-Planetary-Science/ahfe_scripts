@@ -5,15 +5,17 @@ from hfe_corrections import *
 from hfe_utils import *
 
 print("Ingesting NSSDC data.")
-data=load_hfe(pathname='.')
+data = load_hfe(pathname=".")
 
 print("Ingesting 2018 Nagihara data.")
-nagihara_data=ingest_nagihara_2018(spreadsheet_path='./nagihara/nagihara_jgr_planets.xlsx')
+nagihara_data = ingest_nagihara_2018(
+    spreadsheet_path="./nagihara/nagihara_jgr_planets.xlsx"
+)
 
 print("Ingesting 2019 Nagihara data.")
-nagihara_data=ingest_nagihara_2019(nagihara_data,pathname='./nagihara/pds')
+nagihara_data = ingest_nagihara_2019(nagihara_data, pathname="./nagihara/pds")
 
-data={**data,**nagihara_data}
+data = {**data, **nagihara_data}
 
 print("Flagging missing data.")
 flag_missing_hfe(data)
@@ -54,26 +56,26 @@ manage_disordered_hfe(data)
 
 print("Writing set 1 ('clean').")
 
-os.mkdir('./data_local')
+os.mkdir("./data_local")
 
-write_clean_hfe(data,'./data_local/clean')
+write_clean_hfe(data, "./data_local/clean")
 
 print("Standardizing time units and discarding undesirable ranges.")
 polish_hfe(data)
 
 print("Computing explicit temperature values at each thermometer.")
-data_split=split_to_thermometers(data)
+data_split = split_to_thermometers(data)
 
 print("Concatenating Nagihara and NSSDC data.")
 join_hfe_years(data_split)
 
 print("Writing set 2 ('split').")
-write_split_hfe(data_split,'./data_local/split')
+write_split_hfe(data_split, "./data_local/split")
 
 print("Assigning depth values and concatenating all files per probe.")
-data_depth=combine_with_depth(data_split)
+data_depth = combine_with_depth(data_split)
 
 print("Writing set 3 ('depth').")
-write_deep_hfe(data_depth,'./data_local/depth')
+write_deep_hfe(data_depth, "./data_local/depth")
 
 print("Done.")
