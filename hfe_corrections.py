@@ -1482,9 +1482,12 @@ def a15p2_1_cleanup(data):
     # are *also* certainly subject to the bitflip error and it is impossible to
     # determine their 'correct' binary order of magnitude. We have avoided correcting them
     # and have given them a special flag.
-    # there is also weird jaggedy bit around 15860 that does not appear to be an actual bitflip.
 
-    # Similarly, [TODO: DESCRIBE ECLIPSES]
+    # There are a number of lunar eclipses. They are also subject to the bitflip error when negative, and
+    # their correct order of magnitude is impossible to determine. Where negative, we
+    # have given them a special flag (see above for values).
+
+    # Finally, there is a weird jaggedy bit around 15860 that does not appear to be an actual bitflip.
 
     bins = np.array([-2.0 / 2 ** n for n in range(10)])
 
@@ -1496,19 +1499,6 @@ def a15p2_1_cleanup(data):
         dT[i] = -dT[i] - 16
 
     # Flag extreme outliers in dT.
-
-    # TODO: rewrite this
-
-    # NOTE: There tends to be a bit spike at the temperature transitions which
-    #       I assume correspond to the terminus transition and accompanying
-    #       huge temp swings associated with direct sunlight in day vs. night.
-    #       I have _not_ flagged these spikes as outliers. However, corresponding
-    # 		negative values have been given a special flag (see above),
-    # 		as they are certainly subject to the bitflip error, but their correct order
-    # 		of magnitude is impossible to determine.
-    # NOTE: There are a number of lunar eclipses. They are also subject to the bitflip error when negative, and
-    # 		their correct order of magnitude is impossible to determine. Where negative, we
-    # 		have given them a special flag (see above for values).
 
     flags[
         [
